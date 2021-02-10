@@ -4,10 +4,12 @@ output: html_document
 ---
 
 Before you start looking at the data, discuss what predictions you have and why?
- - 
+ - Longer RTs and more errors when there is incongruency between circle size and pitch (i.e. larger circles are congruent with higher pitched noises, and vice versa).
 
 
 ```{r}
+pacman::p_load(tidyverse)
+
 
 ```
 
