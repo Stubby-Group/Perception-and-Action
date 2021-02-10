@@ -15,10 +15,18 @@ Before you start looking at the data, discuss what predictions you have and why?
 
 ```{r}
 pacman::p_load(tidyverse, plyr)
-# load data
+# load vision data
 filenames_list <- list.files(path = "crossmodal data", pattern = "*vision*", full.names = TRUE)
 vision_data = ldply(filenames_list, read_csv)
 
+# change the name of the version to vision instead of auditory
+vision_data$version <- "vision"
 
+# load audition data
+filenames_list <- list.files(path = "crossmodal data", pattern = "*audition*", full.names = TRUE)
+audition_data = ldply(filenames_list, read_csv)
+
+# rbind the two types of tasks into one dataframe
+df <- rbind(vision_data, audition_data)
 ```
 
