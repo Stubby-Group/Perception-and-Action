@@ -8,9 +8,50 @@ Before you start looking at the data, discuss what predictions you have and why?
 
 
 ```{r}
-pacman::p_load(tidyverse)
+pacman::p_load(tidyverse, stringr, plyr, readr, ggplot2)
+```
 
+```{r Loading data}
+visiondir = "vision"
+audidir = "audition"
+
+vision = list.files(path=visiondir, pattern="*.csv", full.names=TRUE)
+audi = list.files(path=audidir, pattern="*.csv", full.names=TRUE)
+
+df_vis = ldply(vision, read_csv)
+df_audi = ldply(audi, read_csv)
+
+# Correcting error:
+df_vis$version <- "visual"
+
+# Binding:
+df <- rbind(df_vis, df_audi)
+```
+
+
+
+```{r}
 # Try to make a plot of the mean reaction times per congruency. You might want to remove incorrect responses first. You can also make a graph of accuracy rate.
+
+df_correct <- subset(df, accuracy == "TRUE")
+
+ggplot(df_correct, aes(x = version, y = rt, color = congruency))+
+  geom_bar(stat = "summary", fun.y=mean, width = 0.4, size = 2, fill = "#e9e9e9", position = "dodge")+
+  geom_errorbar(stat = "summary", fun.data=mean_se, width = 0.3, color = "#000000", position = "dodge")
+```
+
+
+```{r}
+p <- ggplot(df, aes(x = congruency, y=rt, group = version, color=version)) + 
+  geom_line() +
+  geom_point()
+  #geom_errorbar(aes(ymin = rt - sd(rt), ymax = rt + sd(rt)), width=.2, position=position_dodge(0.05))
+p
+
+
+ggplot(tgc, aes(x=dose, y=len, colour=supp)) + 
+    geom_errorbar(aes(ymin=len-se, ymax=len+se), width=.1) +
+
 
 
 # Interpret the findings. Do they match your predictions? Why? Why not?
