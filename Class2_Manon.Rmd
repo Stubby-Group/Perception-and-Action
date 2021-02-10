@@ -13,7 +13,7 @@ Before you start looking at the data, discuss what predictions you have and why?
 # Interpret the findings. Do they match your predictions? Why? Why not?
 ```
 
-```{r}
+```{r data loading and cleaning}
 pacman::p_load(tidyverse, plyr)
 # load vision data
 filenames_list <- list.files(path = "crossmodal data", pattern = "*vision*", full.names = TRUE)
@@ -28,5 +28,15 @@ audition_data = ldply(filenames_list, read_csv)
 
 # rbind the two types of tasks into one dataframe
 df <- rbind(vision_data, audition_data)
+```
+
+```{r make a plot of the mean reaction times per congruency. You might want to remove incorrect responses first. You can also make a graph of accuracy rate}
+
+# sort out incorrect responses
+df_correct <- subset(df, accuracy == "TRUE")
+
+ggplot(df_correct, aes(x = version, y = rt, color = congruency))+
+  geom_bar(stat = "summary", fun.y=mean, width = 0.4, size = 2, fill = "#e9e9e9", position = "dodge")+
+  geom_errorbar(stat = "summary", fun.data=mean_se, width = 0.3, color = "#000000", position = "dodge")
 ```
 
