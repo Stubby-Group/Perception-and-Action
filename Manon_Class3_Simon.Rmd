@@ -1,0 +1,15 @@
+---
+title: "Untitled"
+author: "Lærke Brædder"
+date: "2/17/2021"
+output: html_document
+---
+
+```{r loading data}
+pacman::p_load(tidyverse, plyr)
+filenames_list <- list.files(path = "Simon data", pattern = "*csv", full.names = TRUE)
+df = ldply(filenames_list, read_csv)
+df <- df[-14]
+colnames(df)
+```
+
