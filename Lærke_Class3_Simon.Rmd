@@ -5,26 +5,96 @@ date: "2/17/2021"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+Preparation
+- Quickly read through the instructions
+- Load the data from this link: https://drive.google.com/drive/folders/18hTvraUiPwxfzCzXl0QNP0Nh5LQK2Oql?usp=sharing
+```{r Loading data}
+pacman::p_load(tidyverse, stringr, plyr, readr, ggplot2)
+
+files <- list.files(path = "Simon data", pattern = "*.csv", full.names=TRUE)
+df = ldply(files, read_csv)
+df <- df[-14]
+
+df$type <- NULL
+df$trial_type <- NULL
+
+df <- na.omit(df)
+
 ```
 
-## R Markdown
+- Combine the datasets and only keep the columns you need
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+- Make a new variable ‘congruency’ that code the congruent, neutral and incongruent
+conditions
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+- Remove the practice data
 
-```{r cars}
-summary(cars)
-```
+- Challenge Level [Data Cleaning]: Remove outliers (if there are any). Do it in a good
+way; maybe plot the data first.
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+#Plotting (after each plot, write me a personal message so I can come see )
+- Plot the difference in reaction times between congruency conditions (only using
+correct responses).
+Suggestion: make a barplot showing mean reaction times.
+Upgrade: add error bars (standard errors or 95% confidence intervals).
+- Challenge Level [Data visualization]: In addition to means, show the difference in
+reaction time distributions between congruency conditions.
+- Plot the difference in accuracy between conditions.
+Suggestion: make a barplot showing mean accuracies.
+Upgrade: add error bars (standard errors or 95% confidence intervals.
+- Challenge Level [Data visualization]: In addition to the average differences between
+conditions, also show the differences for each participant (for reaction times and/or
+accuracies).
+Statistical Analysis (for each analysis, write me a personal message so I can come see )
+- Use a linear regression to assess whether there is a difference in reaction times
+between congruency conditions. Only use correct responses.
+Upgrade: Add a random intercept (potentially also random slopes) per participant
+- Challenge Level [Modeling data distributions]: Oh no! Linear models assume normal
+distributed residuals. Reaction times are notoriously non-normal. Use a GLM to make
+up for this. It’s normal (pun intended) to use an inverse gaussian family, look for more
+options in this link:
+https://lindeloev.shinyapps.io/shiny-rt/
+- Use a logistic regression to assess whether there is a difference in accuracy between
+congruency conditions.
+Upgrade: add a random intercept (potentially also random slopes) per participant.
+- Challenge Level [Extending models]: In addition to congruency conditions, assess (with
+plotting and/or statistics) any effects (on reaction time and/or accuracy) due to:
+o Handedness e.g. the side where the block was shown
+o Practice e.g. how long the experiment has lasted.
+Consider using the practice data for this.
+o Accuracy e.g. whether the answer was correct.
+This is for effects on reaction time, obviously.
+Interpretation and Discussion
+- Did you replicate the Simon effect?
+- Give a theoretical explanation for your results.
+- Are there limitations / issues with this experimental design?
+- Challenge Level [Experimental design]: Design an experiment building on the Simon
+task paradigm to investigate how the Simon effect relates to another cognitive
+process, for example attention, cognitive load, framing, memory, emotion, social
+cognition etc.
+Maybe this paradigm can also be used for testing even cooler hypotheses that your
+unimaginative instructor couldn’t come up with.
+- Challenge Level [Real-world relations]: Find three good real-world examples where the
+Simon effect (or something very similar) could matter.
+- Challenge Level [Cognitive design]: Imagine you are designing a website, a computer
+game, an emergency med aid kit, the streets of a city, or something like that. How can
+knowledge of the Simon effect be used to make the design better (or worse ;) ).
+Writing reports
+- I said this already: about half a page, anyone who writes more than one page gets
+expelled instantly.
+- Briefly explain the Simon task
+- Put in plots and statistical results
+- Comment on / discuss the results. Show off any Challenge Level task solutions.
+- Attach your R code. It better have comments.
+- Challenge Level: Include a beautiful CogSci poem.
+Sending Emails
+- Don’t underestimate how important this discipline is to academic work…
+- Send the report to me (peter@waade.net). I won’t ready anything sent more than two
+weeks after today (but I mean it’s not meant as a big deal so just send it whenever
+you’re ready )
+- Put ‘Simon Task Results’ and the group number/name (maybe just the number of the
+carpet you like best in the digital classroom) and the class number in the subject of the
+mail
+- And put group member names in the email.
+Good luck !
