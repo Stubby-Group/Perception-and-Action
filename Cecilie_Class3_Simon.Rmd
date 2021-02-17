@@ -1,0 +1,49 @@
+---
+title: "Untitled"
+author: "Lærke Brædder"
+date: "2/17/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(plyr)
+library(readr)
+library(tidyverse)
+
+mydir = "Simon data"
+myfiles = list.files(path=mydir, pattern="*.csv", full.names=TRUE)
+df = ldply(myfiles, read_csv)
+
+df$`rt,"stimulus","key_press","type","part","color","position","trial_type","trial_index","time_elapsed","internal_node_id","subject","accuracy"` <- NULL
+df$type <- NULL
+df$trial_type <- NULL
+df <- na.omit(df)
+
+```
+
+
+Make a new variable ‘congruency’ that code the congruent, neutral and incongruent
+conditions.
+```{r}
+df$congruency <- 0
+df$congruency[df$color == "green" & df$position == "left" | df$color == "red" & df$position == "right" ] <- "congruent"
+df$congruency[df$color == "red" & df$position == "left" | df$color == "green" & df$position == "right" ] <- "incongruent"
+df$congruency[df$position == "middle"] <- "neutral"
+
+
+```
+
+
+```{r}
+dfright <- subset(df, df$accuracy == "TRUE")
+
+ggplot(dfright, aes(x = position, y = rt, color = color))+
+  geom_bar(stat = "summary", fun.y=mean, width = 0.4, size = 2, fill = "#e9e9e9", position = "dodge")+
+  scale_color_manual(values = alpha(c("green", "red")))+
+  geom_errorbar(stat = "summary", fun.data=mean_se, width = 0.4, position = "dodge", aes(color = color))
+```
+
