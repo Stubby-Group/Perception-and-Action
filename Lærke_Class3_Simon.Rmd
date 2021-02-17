@@ -20,6 +20,7 @@ df$trial_type <- NULL
 
 df <- na.omit(df)
 
+df$key_press <- ifelse(df$key_press == 83, "S", ifelse(df$key_press == 76, "L", "unknown"))
 ```
 
 - Combine the datasets and only keep the columns you need
