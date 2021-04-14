@@ -7,9 +7,50 @@ output: html_document
 
 ```{r}
 
-read.csv("genderbiasdata/subject-10.csv")
-read.csv("genderbiasdata/subject-111.csv")
-read.csv("genderbiasdata/subject-646464.csv")
-read.csv("genderbiasdata/subject-13.csv")
+
+d1 <- read.csv("genderbiasdata/subject-10.csv")
+d2 <- read.csv("genderbiasdata/subject-111.csv")
+d3 <- read.csv("genderbiasdata/subject-646464.csv")
+d4 <- read.csv("genderbiasdata/subject-13.csv")
+
+d <- rbind(d1, d2, d3, d4)
+
+# cleaning and removing dumb variables
+#d <- dplyr::select(d, accuracy, avg_rt, control, correct, correct_answer, count_logger, initiation_time, left_option, prime_congruency, profession, response, response_time, response_time_end_of_practice, response_time_instructions, right_option, subject_nr, total_correct, total_responses, total_response_time, xpos_mousetrap_response, ypos_mousetrap_response)
+
+# mate into mt object
+library(mousetrap)
+library(tidyverse)
+dmt <- mt_import_mousetrap(d)
+
+# flip and plot
+dmt <- mt_remap_symmetric(dmt,
+                          remap_xpos = "left",
+                          remap_ypos = "up")
+
+mt_plot(dmt, color = "correct")
+
+# time plot
+mt_plot(dmt, color = "prime_congruency", x = "timestamps", y = "ypos")
+```
+
+```{r going offroad}
+d_correct <- dplyr::filter(d, correct == "1") #exclude incorrect trials
+dc_exp <- dplyr::filter(d_correct, control == "0") #exclude control trials
+
+# making a dmt plot of the experimental trials with correct responses only
+dmt2 <- mt_remap_symmetric(dmt,
+                          remap_xpos = "left",
+                          remap_ypos = "up")
+mt_plot(dmt2, color = "prime_congruency")
+
+dmt2 <- mt_align(dmt2,
+                 use = "trajectories",
+                 dimensions = c("xpos", "ypos"),
+                 coordinates = c(0, 0, -500, 250),
+                 align_start = TRUE,
+                 align_end = FALSE)
+
+mt_plot(dmt2, color = "prime_congruency")
 ```
 
