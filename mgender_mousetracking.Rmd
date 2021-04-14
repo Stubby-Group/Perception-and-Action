@@ -1,0 +1,15 @@
+---
+title: "Gender_mousetracking"
+author: "Manon Grandjean"
+date: "14/4/2021"
+output: html_document
+---
+
+```{r}
+
+read.csv("genderbiasdata/subject-10.csv")
+read.csv("genderbiasdata/subject-111.csv")
+read.csv("genderbiasdata/subject-646464.csv")
+read.csv("genderbiasdata/subject-13.csv")
+```
+
