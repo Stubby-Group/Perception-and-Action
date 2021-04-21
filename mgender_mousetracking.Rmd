@@ -54,3 +54,76 @@ dmt2 <- mt_align(dmt2,
 mt_plot(dmt2, color = "prime_congruency")
 ```
 
+
+
+
+
+
+
+
+
+```{r Lærke}
+pacman::p_load(
+  mousetrap
+)
+
+a <- read.csv("subject-10.csv")
+b <- read.csv("subject-13.csv")
+c <- read.csv("subject-111.csv")
+d <- read.csv("subject-646464.csv")
+df <- rbind(a,b,c,d)
+
+dmt <- mt_import_mousetrap(df)
+
+mt_plot(dmt, color = "prime_congruency")
+
+dmt_remapped <- mt_remap_symmetric(
+  dmt,
+  remap_xpos = "left",
+  remap_ypos = "up"
+)
+
+mt_plot(dmt_remapped)
+
+
+df_filter <- subset(df, control =="0")
+
+dmt <- mt_import_mousetrap(df_filter)
+mt_plot(dmt, color = "prime_congruency")
+
+dmt_remapped <- mt_remap_symmetric(
+  dmt,
+  remap_xpos = "left",
+  remap_ypos = "up"
+)
+
+mt_plot(dmt_remapped, color = "prime_congruency")
+
+dmt_norm <- mt_time_normalize(dmt_remapped)
+
+mt_plot(
+  dmt_norm,
+  use = "tn_trajectories",
+  color = "prime_congruency"
+)
+
+dmt_norm1 <- mt_time_normalize(
+  dmt_remapped,
+  nsteps = 101
+)
+
+mt_plot_aggregate(dmt_remapped, color = "prime_congruency")
+
+mt_plot_aggregate(
+  dmt,
+  use = "trajectories",
+  color = "prime_congruency",
+)
+
+mt_plot_aggregate(
+  dmt_norm,
+  use = "tn_trajectories",
+  color = "prime_congruency",
+)
+```
+
